@@ -85,6 +85,11 @@ parser_err_t hex_open(void *storage, const char *filename, const char write) {
 			switch(type) {
 				/* data record */
 				case 0:
+					if (st->data_len == 0) {
+						st->base |= address;
+						last_address = address;
+					}
+
 					c = address - last_address;
 					st->data = realloc(st->data, st->data_len + c + reclen);
 
@@ -198,6 +203,11 @@ parser_err_t hex_close(void *storage) {
 	return PARSER_ERR_OK;
 }
 
+unsigned int hex_base(void *storage) {
+	hex_t *st = storage;
+	return st->base;
+}
+
 unsigned int hex_size(void *storage) {
 	hex_t *st = storage;
 	return st->data_len;
@@ -224,6 +234,7 @@ parser_t PARSER_HEX = {
 	hex_init,
 	hex_open,
 	hex_close,
+	hex_base,
 	hex_size,
 	hex_read,
 	hex_write

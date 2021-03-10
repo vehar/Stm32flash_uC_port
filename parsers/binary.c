@@ -84,6 +84,10 @@ parser_err_t binary_close(void *storage) {
 	return PARSER_ERR_OK;
 }
 
+unsigned int binary_base(void *storage) {
+	return 0;
+}
+
 unsigned int binary_size(void *storage) {
 	binary_t *st = storage;
 	return st->stat.st_size;
@@ -137,6 +141,7 @@ parser_t PARSER_BINARY = {
 	binary_init,
 	binary_open,
 	binary_close,
+	binary_base,
 	binary_size,
 	binary_read,
 	binary_write

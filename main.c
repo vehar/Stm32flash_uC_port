@@ -4,6 +4,7 @@
   Copyright 2011 Steve Markgraf <steve@steve-m.de>
   Copyright 2012-2016 Tormod Volden <debian.tormod@gmail.com>
   Copyright 2013-2016 Antonio Borneo <borneo.antonio@gmail.com>
+  Copyright 2021 Renaud Fivet <renaud.fivet@gmail.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -296,8 +297,16 @@ int main(int argc, char* argv[]) {
 		fprintf(diag, "Using Parser : %s\n", parser->name);
 
 		/* We may know from the file how much data there is */
-		if (!use_stdinout && !readwrite_len)
-			readwrite_len = parser->size(p_st);
+		if (!use_stdinout) {
+			if (!start_addr)
+				start_addr = parser->base(p_st);
+			if (start_addr)
+				fprintf(diag, "Location     : %#08x\n", start_addr);
+
+			if (!readwrite_len)
+				readwrite_len = parser->size(p_st);
+			fprintf(diag, "Size         : %u\n", readwrite_len);
+		}
 	} else {
 		parser = &PARSER_BINARY;
 		p_st = parser->init();
