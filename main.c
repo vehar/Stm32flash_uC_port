@@ -559,6 +559,7 @@ int main(int argc, char* argv[]) {
 			uint32_t left	= end - addr;
 			len		= max_wlen > left ? left : max_wlen;
 			len		= len > size - offset ? size - offset : len;
+			unsigned int reqlen = len ;
 
 			if (parser->read(p_st, buffer, &len) != PARSER_ERR_OK)
 				goto close;
@@ -623,6 +624,8 @@ int main(int argc, char* argv[]) {
 			);
 			fflush(diag);
 
+			if( len < reqlen)	/* Last read already reached EOF */
+				break ;
 		}
 
 		fprintf(diag,	"Done.\n");

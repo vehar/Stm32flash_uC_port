@@ -103,12 +103,11 @@ parser_err_t binary_read(void *storage, void *data, unsigned int *len) {
 	ssize_t r;
 	while(left > 0) {
 		r = read(st->fd, d, left);
-		/* If there is no data to read at all, return OK, but with zero read */
-		if (r == 0 && left == *len) {
-			*len = 0;
-			return PARSER_ERR_OK;
-		}
-		if (r <= 0) return PARSER_ERR_SYSTEM;
+		if (r == 0)
+			break ;
+		else if ( r < 0)
+			return PARSER_ERR_SYSTEM;
+
 		left -= r;
 		d += r;
 	}
