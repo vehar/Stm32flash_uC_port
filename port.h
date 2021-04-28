@@ -34,6 +34,7 @@ typedef enum {
 #define PORT_CMD_INIT	(1 << 2)	/* use INIT cmd to autodetect speed */
 #define PORT_RETRY	(1 << 3)	/* allowed read() retry after timeout */
 #define PORT_STRETCH_W	(1 << 4)	/* warning for no-stretching commands */
+#define PORT_NPAG_CSUM	(1 << 5)	/* checksum after number of pages to erase */
 
 /* all options and flags used to open and configure an interface */
 struct port_options {

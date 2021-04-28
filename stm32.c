@@ -843,6 +843,25 @@ static stm32_err_t stm32_pages_erase(const stm32_t *stm, uint32_t spage, uint32_
 
 		buf[i++] = pages - 1;
 		cs ^= (pages-1);
+		/* For I2C send a checksum after the number of pages (AN4221) */
+		if (port->flags && PORT_NPAG_CSUM) {
+			buf[i++] = cs;
+			p_err = port->write(port, buf, i);
+			if (p_err != PORT_ERR_OK) {
+				fprintf(stderr, "Erase failed sending number of pages.");
+				free(buf);
+				return STM32_ERR_UNKNOWN;
+			}
+			s_err = stm32_get_ack(stm);
+			if (s_err != STM32_ERR_OK) {
+				fprintf(stderr, "Erase failed, no ack after number of pages.");
+				free(buf);
+				return STM32_ERR_UNKNOWN;
+			}
+			cs = 0;
+			i = 0;
+		}
+
 		for (pg_num = spage; pg_num < (pages + spage); pg_num++) {
 			buf[i++] = pg_num;
 			cs ^= pg_num;
@@ -875,6 +894,24 @@ static stm32_err_t stm32_pages_erase(const stm32_t *stm, uint32_t spage, uint32_
 	pg_byte = (pages - 1) & 0xFF;
 	buf[i++] = pg_byte;
 	cs ^= pg_byte;
+
+	if (port->flags & PORT_NPAG_CSUM) {
+		buf[i++] = cs;
+		p_err = port->write(port, buf, i);
+		if (p_err != PORT_ERR_OK) {
+			fprintf(stderr, "Extended erase failed sending number of pages.");
+			free(buf);
+			return STM32_ERR_UNKNOWN;
+		}
+		s_err = stm32_get_ack(stm);
+		if (s_err != STM32_ERR_OK) {
+			fprintf(stderr, "Extended erase failed, no ack after number of pages.");
+			free(buf);
+			return STM32_ERR_UNKNOWN;
+		}
+		cs = 0;
+		i = 0;
+	}
 
 	for (pg_num = spage; pg_num < spage + pages; pg_num++) {
 		pg_byte = pg_num >> 8;
