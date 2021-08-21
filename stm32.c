@@ -797,7 +797,7 @@ static stm32_err_t stm32_mass_erase(const stm32_t *stm)
 		return STM32_ERR_OK;
 	}
 
-	/* extended erase */
+	/* extended erase (0x44 or 0x45) */
 	buf[0] = 0xFF;	/* 0xFFFF the magic number for mass erase */
 	buf[1] = 0xFF;
 	buf[2] = 0x00;  /* checksum */
@@ -870,11 +870,12 @@ static stm32_err_t stm32_pages_erase(const stm32_t *stm, uint32_t spage, uint32_
 		p_err = port->write(port, buf, i);
 		free(buf);
 		if (p_err != PORT_ERR_OK) {
-			fprintf(stderr, "Erase failed.\n");
+			fprintf(stderr, "Erase failed sending list of pages.\n");
 			return STM32_ERR_UNKNOWN;
 		}
 		s_err = stm32_get_ack_timeout(stm, pages * STM32_PAGEERASE_TIMEOUT);
 		if (s_err != STM32_ERR_OK) {
+			fprintf(stderr, "Erase failed.\n");
 			if (port->flags & PORT_STRETCH_W)
 				stm32_warn_stretching("erase");
 			return STM32_ERR_UNKNOWN;
@@ -882,7 +883,7 @@ static stm32_err_t stm32_pages_erase(const stm32_t *stm, uint32_t spage, uint32_
 		return STM32_ERR_OK;
 	}
 
-	/* extended erase */
+	/* extended erase (0x44 or 0x45) */
 	buf = malloc(2 + 2 * pages + 1);
 	if (!buf)
 		return STM32_ERR_UNKNOWN;
@@ -925,13 +926,13 @@ static stm32_err_t stm32_pages_erase(const stm32_t *stm, uint32_t spage, uint32_
 	p_err = port->write(port, buf, i);
 	free(buf);
 	if (p_err != PORT_ERR_OK) {
-		fprintf(stderr, "Page-by-page erase error.\n");
+		fprintf(stderr, "Extended erase failed sending list of pages.\n");
 		return STM32_ERR_UNKNOWN;
 	}
 
 	s_err = stm32_get_ack_timeout(stm, pages * STM32_PAGEERASE_TIMEOUT);
 	if (s_err != STM32_ERR_OK) {
-		fprintf(stderr, "Page-by-page erase failed. Check the maximum pages your device supports.\n");
+		fprintf(stderr, "Extended erase failed. Check the maximum pages your device supports.\n");
 		if ((port->flags & PORT_STRETCH_W)
 		    && stm->cmd->er != STM32_CMD_EE_NS)
 			stm32_warn_stretching("erase");
