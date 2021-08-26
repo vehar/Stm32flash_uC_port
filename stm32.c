@@ -391,13 +391,17 @@ static stm32_err_t stm32_send_init_seq(const stm32_t *stm)
 	 */
 	p_err = port->write(port, &cmd, 1);
 	if (p_err != PORT_ERR_OK) {
-		fprintf(stderr, "Failed to send init to device\n");
+		fprintf(stderr, "Failed to resend init to device\n");
 		return STM32_ERR_UNKNOWN;
 	}
 	p_err = port->read(port, &byte, 1);
 	if (p_err == PORT_ERR_OK && byte == STM32_NACK)
 		return STM32_ERR_OK;
-	fprintf(stderr, "Failed to init device.\n");
+	if (p_err == PORT_ERR_TIMEDOUT) {
+		fprintf(stderr, "Failed to init device, timeout.\n");
+		return STM32_ERR_UNKNOWN;
+	}
+	fprintf(stderr, "Failed to init device after retry.\n");
 	return STM32_ERR_UNKNOWN;
 }
 
