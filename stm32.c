@@ -176,11 +176,14 @@ int flash_addr_to_page_ceil(uint32_t addr);
 
 static void stm32_warn_stretching(const char *f)
 {
-	fprintf(stderr, "Attention !!!\n");
-	fprintf(stderr, "\tThis %s error could be caused by your I2C\n", f);
-	fprintf(stderr, "\tcontroller not accepting \"clock stretching\"\n");
-	fprintf(stderr, "\tas required by bootloader.\n");
-	fprintf(stderr, "\tCheck \"I2C.txt\" in stm32flash source code.\n");
+	fprintf(stderr, "Attention !\n");
+	fprintf(stderr, "\tThe %s operation was possibly executed, however a driver\n", f);
+	fprintf(stderr, "\ttimeout might have occured while waiting for acknowledgment\n");
+	fprintf(stderr, "\tof finished operation.\n");
+	fprintf(stderr, "\tThis can be caused by your I2C controller not accepting\n");
+	fprintf(stderr, "\t\"clock stretching\" as required by the bootloader,\n");
+	fprintf(stderr, "\tor timing out too early.\n");
+	fprintf(stderr, "\tPlease see \"I2C.txt\" in the stm32flash source code.\n");
 }
 
 static stm32_err_t stm32_get_ack_timeout(const stm32_t *stm, time_t timeout)
