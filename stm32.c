@@ -438,6 +438,14 @@ stm32_t *stm32_init(struct port_interface *port, const char init)
 	len = (port->flags & PORT_GVR_ETX) ? 3 : 1;
 	if (port->read(port, buf, len) != PORT_ERR_OK)
 		return NULL;
+
+	/* STM32L412xx/422xx bootloader V13.1 sends an extra ACK after init */
+	if ((port->flags & PORT_GVR_ETX) && buf[0] == STM32_ACK && buf[1] == 0x31) {
+		buf[0] = buf[1];
+		buf[1] = buf[2];
+		port->read(port, &buf[2], 1);
+	}
+
 	stm->version = buf[0];
 	stm->option1 = (port->flags & PORT_GVR_ETX) ? buf[1] : 0;
 	stm->option2 = (port->flags & PORT_GVR_ETX) ? buf[2] : 0;
