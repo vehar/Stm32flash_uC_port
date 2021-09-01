@@ -29,6 +29,11 @@
 #include <stdio.h>
 #include <sys/file.h>
 
+/* To detect BSD for baud rate encoding */
+#if defined(__unix__) || defined(__UNIX__) || (defined(__APPLE__) && defined(__MACH__))
+#  include <sys/param.h>
+#endif
+
 #include "serial.h"
 #include "port.h"
 
@@ -105,6 +110,20 @@ static port_err_t serial_setup(serial_t *h, const serial_baud_t baud,
 		case SERIAL_BAUD_57600:   port_baud = B57600; break;
 		case SERIAL_BAUD_115200:  port_baud = B115200; break;
 		case SERIAL_BAUD_230400:  port_baud = B230400; break;
+#ifdef BSD
+		case SERIAL_BAUD_460800:  port_baud = 460800; break;
+		case SERIAL_BAUD_500000:  port_baud = 500000; break;
+		case SERIAL_BAUD_576000:  port_baud = 576000; break;
+		case SERIAL_BAUD_921600:  port_baud = 921600; break;
+		case SERIAL_BAUD_1000000: port_baud = 1000000; break;
+		case SERIAL_BAUD_1152000: port_baud = 1152000; break;
+		case SERIAL_BAUD_1500000: port_baud = 1500000; break;
+		case SERIAL_BAUD_2000000: port_baud = 2000000; break;
+		case SERIAL_BAUD_2500000: port_baud = 2500000; break;
+		case SERIAL_BAUD_3000000: port_baud = 3000000; break;
+		case SERIAL_BAUD_3500000: port_baud = 3500000; break;
+		case SERIAL_BAUD_4000000: port_baud = 4000000; break;
+#else
 #ifdef B460800
 		case SERIAL_BAUD_460800:  port_baud = B460800; break;
 #endif /* B460800 */
@@ -141,6 +160,7 @@ static port_err_t serial_setup(serial_t *h, const serial_baud_t baud,
 #ifdef B4000000
 		case SERIAL_BAUD_4000000: port_baud = B4000000; break;
 #endif /* B4000000 */
+#endif /* BSD */
 
 		case SERIAL_BAUD_INVALID:
 		default:
