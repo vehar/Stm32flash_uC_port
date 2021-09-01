@@ -120,12 +120,27 @@ static port_err_t serial_setup(serial_t *h, const serial_baud_t baud,
 #ifdef B1000000
 		case SERIAL_BAUD_1000000: port_baud = B1000000; break;
 #endif /* B1000000 */
+#ifdef B1152000
+		case SERIAL_BAUD_1152000: port_baud = B1152000; break;
+#endif /* B1152000 */
 #ifdef B1500000
 		case SERIAL_BAUD_1500000: port_baud = B1500000; break;
 #endif /* B1500000 */
 #ifdef B2000000
 		case SERIAL_BAUD_2000000: port_baud = B2000000; break;
 #endif /* B2000000 */
+#ifdef B2500000
+		case SERIAL_BAUD_2500000: port_baud = B2500000; break;
+#endif /* B2500000 */
+#ifdef B3000000
+		case SERIAL_BAUD_3000000: port_baud = B3000000; break;
+#endif /* B3000000 */
+#ifdef B3500000
+		case SERIAL_BAUD_3500000: port_baud = B3500000; break;
+#endif /* B3500000 */
+#ifdef B4000000
+		case SERIAL_BAUD_4000000: port_baud = B4000000; break;
+#endif /* B4000000 */
 
 		case SERIAL_BAUD_INVALID:
 		default:

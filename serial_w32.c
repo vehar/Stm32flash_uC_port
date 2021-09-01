@@ -110,12 +110,13 @@ static port_err_t serial_setup(serial_t *h,
 {
 	switch (baud) {
 		case SERIAL_BAUD_1200:    h->newtio.BaudRate = CBR_1200; break;
-		/* case SERIAL_BAUD_1800: h->newtio.BaudRate = CBR_1800; break; */
 		case SERIAL_BAUD_2400:    h->newtio.BaudRate = CBR_2400; break;
 		case SERIAL_BAUD_4800:    h->newtio.BaudRate = CBR_4800; break;
 		case SERIAL_BAUD_9600:    h->newtio.BaudRate = CBR_9600; break;
+		case SERIAL_BAUD_14400:   h->newtio.BaudRate = CBR_14400; break;
 		case SERIAL_BAUD_19200:   h->newtio.BaudRate = CBR_19200; break;
 		case SERIAL_BAUD_38400:   h->newtio.BaudRate = CBR_38400; break;
+		case SERIAL_BAUD_56000:   h->newtio.BaudRate = CBR_56000; break;
 		case SERIAL_BAUD_57600:   h->newtio.BaudRate = CBR_57600; break;
 		case SERIAL_BAUD_115200:  h->newtio.BaudRate = CBR_115200; break;
 		case SERIAL_BAUD_128000:  h->newtio.BaudRate = CBR_128000; break;
@@ -127,8 +128,13 @@ static port_err_t serial_setup(serial_t *h,
 		case SERIAL_BAUD_576000:  h->newtio.BaudRate = 576000; break;
 		case SERIAL_BAUD_921600:  h->newtio.BaudRate = 921600; break;
 		case SERIAL_BAUD_1000000: h->newtio.BaudRate = 1000000; break;
+		case SERIAL_BAUD_1152000: h->newtio.BaudRate = 1152000; break;
 		case SERIAL_BAUD_1500000: h->newtio.BaudRate = 1500000; break;
 		case SERIAL_BAUD_2000000: h->newtio.BaudRate = 2000000; break;
+		case SERIAL_BAUD_2500000: h->newtio.BaudRate = 2500000; break;
+		case SERIAL_BAUD_3000000: h->newtio.BaudRate = 3000000; break;
+		case SERIAL_BAUD_3500000: h->newtio.BaudRate = 3500000; break;
+		case SERIAL_BAUD_4000000: h->newtio.BaudRate = 4000000; break;
 		case SERIAL_BAUD_INVALID:
 
 		default:
