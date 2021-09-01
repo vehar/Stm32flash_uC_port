@@ -216,8 +216,12 @@ static port_err_t serial_setup(serial_t *h, const serial_baud_t baud,
 	h->newtio.c_oflag &= ~(OPOST | ONLCR);
 
 	/* setup the new settings */
-	cfsetispeed(&h->newtio, port_baud);
-	cfsetospeed(&h->newtio, port_baud);
+	if (cfsetispeed(&h->newtio, port_baud) ||
+	    cfsetospeed(&h->newtio, port_baud)) {
+		fprintf(stderr, "Failed to specify baud rate\n");
+		return PORT_ERR_BAUD;
+	}
+
 	h->newtio.c_cflag |=
 		port_parity	|
 		port_bits	|
@@ -237,11 +241,20 @@ static port_err_t serial_setup(serial_t *h, const serial_baud_t baud,
 
 	/* confirm they were set */
 	tcgetattr(h->fd, &settings);
+
+	if (cfgetispeed(&settings) != port_baud ||
+	    cfgetospeed(&settings) != port_baud) {
+		fprintf(stderr, "Failed to set baud rate\n");
+		return PORT_ERR_BAUD;
+	}
+
 	if (settings.c_iflag != h->newtio.c_iflag ||
 	    settings.c_oflag != h->newtio.c_oflag ||
 	    settings.c_cflag != h->newtio.c_cflag ||
-	    settings.c_lflag != h->newtio.c_lflag)
+	    settings.c_lflag != h->newtio.c_lflag) {
+		fprintf(stderr, "Failed to set terminal flags\n");
 		return PORT_ERR_UNKNOWN;
+	}
 
 	snprintf(h->setup_str, sizeof(h->setup_str), "%u %d%c%d",
 		 serial_get_baud_int(baud),
