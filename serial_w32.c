@@ -135,10 +135,10 @@ static port_err_t serial_setup(serial_t *h,
 		case SERIAL_BAUD_3000000: h->newtio.BaudRate = 3000000; break;
 		case SERIAL_BAUD_3500000: h->newtio.BaudRate = 3500000; break;
 		case SERIAL_BAUD_4000000: h->newtio.BaudRate = 4000000; break;
-		case SERIAL_BAUD_INVALID:
 
+		case SERIAL_BAUD_INVALID:
 		default:
-			return PORT_ERR_UNKNOWN;
+			return PORT_ERR_BAUD;
 	}
 
 	switch (bits) {
@@ -199,6 +199,7 @@ static port_err_t serial_w32_open(struct port_interface *port,
 				  struct port_options *ops)
 {
 	serial_t *h;
+	port_err_t ret;
 
 	/* 1. check device name match */
 	if (!(!strncmp(ops->device, "COM", 3) && isdigit(ops->device[3]))
@@ -208,7 +209,7 @@ static port_err_t serial_w32_open(struct port_interface *port,
 
 	/* 2. check options */
 	if (ops->baudRate == SERIAL_BAUD_INVALID)
-		return PORT_ERR_UNKNOWN;
+		return PORT_ERR_BAUD;
 	if (serial_get_bits(ops->serial_mode) == SERIAL_BITS_INVALID)
 		return PORT_ERR_UNKNOWN;
 	if (serial_get_parity(ops->serial_mode) == SERIAL_PARITY_INVALID)
@@ -222,13 +223,13 @@ static port_err_t serial_w32_open(struct port_interface *port,
 		return PORT_ERR_UNKNOWN;
 
 	/* 4. set options */
-	if (serial_setup(h, ops->baudRate,
-	    serial_get_bits(ops->serial_mode),
-	    serial_get_parity(ops->serial_mode),
-	    serial_get_stopbit(ops->serial_mode)
-	   ) != PORT_ERR_OK) {
+	ret = serial_setup(h, ops->baudRate,
+			   serial_get_bits(ops->serial_mode),
+			   serial_get_parity(ops->serial_mode),
+			   serial_get_stopbit(ops->serial_mode));
+	if (ret != PORT_ERR_OK) {
 		serial_close(h);
-		return PORT_ERR_UNKNOWN;
+		return ret;
 	}
 
 	port->private = h;

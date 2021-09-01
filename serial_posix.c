@@ -164,7 +164,7 @@ static port_err_t serial_setup(serial_t *h, const serial_baud_t baud,
 
 		case SERIAL_BAUD_INVALID:
 		default:
-			return PORT_ERR_UNKNOWN;
+			return PORT_ERR_BAUD;
 	}
 
 	switch (bits) {
@@ -255,6 +255,7 @@ static port_err_t serial_posix_open(struct port_interface *port,
 				    struct port_options *ops)
 {
 	serial_t *h;
+	port_err_t ret;
 
 	/* 1. check options */
 	if (ops->baudRate == SERIAL_BAUD_INVALID)
@@ -276,13 +277,13 @@ static port_err_t serial_posix_open(struct port_interface *port,
 		fprintf(stderr, "Warning: Not a tty: %s\n", ops->device);
 
 	/* 4. set options */
-	if (serial_setup(h, ops->baudRate,
-			 serial_get_bits(ops->serial_mode),
-			 serial_get_parity(ops->serial_mode),
-			 serial_get_stopbit(ops->serial_mode)
-			) != PORT_ERR_OK) {
+	ret = serial_setup(h, ops->baudRate,
+			   serial_get_bits(ops->serial_mode),
+			   serial_get_parity(ops->serial_mode),
+			   serial_get_stopbit(ops->serial_mode));
+	if (ret != PORT_ERR_OK) {
 		serial_close(h);
-		return PORT_ERR_UNKNOWN;
+		return ret;
 	}
 
 	port->private = h;
