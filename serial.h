@@ -68,7 +68,8 @@ typedef enum {
 	SERIAL_BAUD_3500000,
 	SERIAL_BAUD_4000000,
 
-	SERIAL_BAUD_INVALID
+	SERIAL_BAUD_INVALID,
+	SERIAL_BAUD_KEEP
 } serial_baud_t;
 
 typedef enum {

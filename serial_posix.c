@@ -270,6 +270,15 @@ static port_err_t serial_posix_open(struct port_interface *port,
 	serial_t *h;
 	port_err_t ret;
 
+	/* user takes care of all port setup */
+	if (ops->baudRate == SERIAL_BAUD_KEEP) {
+		h = serial_open(ops->device);
+		if (h == NULL)
+			return PORT_ERR_UNKNOWN;
+		port->private = h;
+		return PORT_ERR_OK;
+	}
+
 	/* 1. check options */
 	if (ops->baudRate == SERIAL_BAUD_INVALID)
 		return PORT_ERR_UNKNOWN;

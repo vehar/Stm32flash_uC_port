@@ -21,6 +21,7 @@
 
 serial_baud_t serial_get_baud(const unsigned int baud) {
 	switch(baud) {
+		case      0: return SERIAL_BAUD_KEEP  ;
 		case   1200: return SERIAL_BAUD_1200  ;
 		case   1800: return SERIAL_BAUD_1800  ;
 		case   2400: return SERIAL_BAUD_2400  ;

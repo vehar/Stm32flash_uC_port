@@ -201,6 +201,15 @@ static port_err_t serial_w32_open(struct port_interface *port,
 	serial_t *h;
 	port_err_t ret;
 
+	/* user takes care of all port setup */
+	if (ops->baudRate == SERIAL_BAUD_KEEP) {
+		h = serial_open(ops->device);
+		if (h == NULL)
+			return PORT_ERR_UNKNOWN;
+		port->private = h;
+		return PORT_ERR_OK;
+	}
+
 	/* 1. check device name match */
 	if (!(!strncmp(ops->device, "COM", 3) && isdigit(ops->device[3]))
 	    && !(!strncmp(ops->device, "\\\\.\\COM", strlen("\\\\.\\COM"))
