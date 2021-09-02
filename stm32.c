@@ -851,7 +851,7 @@ static stm32_err_t stm32_pages_erase(const stm32_t *stm, uint32_t spage, uint32_
 		buf[i++] = pages - 1;
 		cs ^= (pages-1);
 		/* For I2C send a checksum after the number of pages (AN4221) */
-		if (port->flags && PORT_NPAG_CSUM) {
+		if (port->flags & PORT_NPAG_CSUM) {
 			buf[i++] = cs;
 			p_err = port->write(port, buf, i);
 			if (p_err != PORT_ERR_OK) {
