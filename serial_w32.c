@@ -84,15 +84,14 @@ static serial_t *serial_open(const char *device)
 	GetCommState(h->fd, &h->oldtio); /* Retrieve port parameters */
 	GetCommState(h->fd, &h->newtio); /* Retrieve port parameters */
 
-	/* PurgeComm(h->fd, PURGE_RXABORT | PURGE_TXCLEAR | PURGE_TXABORT | PURGE_TXCLEAR); */
+	/* PurgeComm(h->fd, PURGE_RXABORT | PURGE_RXCLEAR | PURGE_TXABORT | PURGE_TXCLEAR); */
 
 	return h;
 }
 
 static void serial_flush(const serial_t __unused *h)
 {
-	/* We shouldn't need to flush in non-overlapping (blocking) mode */
-	/* tcflush(h->fd, TCIFLUSH); */
+	PurgeComm(h->fd, PURGE_RXCLEAR);
 }
 
 static void serial_close(serial_t *h)
