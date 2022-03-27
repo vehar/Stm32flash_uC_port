@@ -44,7 +44,7 @@
 #include <windows.h>
 #endif
 
-#define VERSION "0.6"
+#define VERSION "0.7"
 
 /* device globals */
 stm32_t		*stm		= NULL;
