@@ -236,8 +236,10 @@ static port_err_t serial_setup(serial_t *h, const serial_baud_t baud,
 
 	/* set the settings */
 	serial_flush(h);
-	if (tcsetattr(h->fd, TCSANOW, &h->newtio) != 0)
+	if (tcsetattr(h->fd, TCSANOW, &h->newtio) != 0) {
+		fprintf(stderr, "Error: Failed to apply settings\n");
 		return PORT_ERR_UNKNOWN;
+	}
 
 	/* confirm they were set */
 	tcgetattr(h->fd, &settings);
