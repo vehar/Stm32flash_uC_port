@@ -211,6 +211,8 @@ static port_err_t serial_setup(serial_t *h, const serial_baud_t baud,
 	h->newtio.c_cflag &= ~(CSIZE | CRTSCTS);
 #endif
 	h->newtio.c_cflag &= ~(CSIZE | CRTSCTS);
+	h->newtio.c_cflag &= ~(PARENB | PARODD);
+	h->newtio.c_cflag &= ~CSTOPB;
 	h->newtio.c_iflag &= ~(IXON | IXOFF | IXANY | IGNPAR);
 	h->newtio.c_lflag &= ~(ECHOK | ECHOCTL | ECHOKE);
 	h->newtio.c_oflag &= ~(OPOST | ONLCR);
