@@ -63,6 +63,9 @@ static uint32_t f7[]    = { SZ_32K, SZ_32K, SZ_32K, SZ_32K, SZ_128K, SZ_256K, 0 
  */
 const stm32_dev_t devices[] = {
 	/* ID   "name"                              SRAM-address-range      FLASH-address-range    PPS  PSize   Option-byte-addr-range  System-mem-addr-range   Flags */
+	/* C0 */
+/*	{0x443, "STM32C011xx"                     , 0x20001000, 0x20003000, 0x08000000, x         ,  x, x     , x         , x         , 0x1FFF0000, 0x1FFF1800, 0} */
+/*	{0x453, "STM32C031xx"                     , 0x20001000, 0x20001800, 0x08000000, x         ,  x, x     , x         , x         , 0x1FFF0000, 0x1FFF1800, 0} */
 	/* F0 */
 	{0x440, "STM32F030x8/F05xxx"              , 0x20000800, 0x20002000, 0x08000000, 0x08010000,  4, p_1k  , 0x1FFFF800, 0x1FFFF80F, 0x1FFFEC00, 0x1FFFF800, 0},
 	{0x444, "STM32F03xx4/6"                   , 0x20000800, 0x20001000, 0x08000000, 0x08008000,  4, p_1k  , 0x1FFFF800, 0x1FFFF80F, 0x1FFFEC00, 0x1FFFF800, 0},
@@ -135,10 +138,12 @@ const stm32_dev_t devices[] = {
 	/* L5 */
 /*	{0x472, "STM32L552xx/562xx"               , 0x20004000, 0x20040000, 0x08000000, x         ,  x, x     , x         , x         , 0x0BF90000, 0x0BF98000, 0}, */
 	/* WB */
-/*	{0x495, "STM32WB10xx/15xx"                , 0x20005000, 0x20040000, 0x08000000, x         ,  x, x     , x         , x         , 0x1FFF0000, 0x1FFF7000, 0}, */
-/*	{0x494, "STM32WB30(5)xx/50(5)xx"          , 0x20004000, 0x2000C000, 0x08000000, x         ,  x, x     , x         , x         , 0x1FFF0000, 0x1FFF7000, 0}, */
+/*	{0x494, "STM32WB10xx/15xx"                , 0x20005000, 0x20040000, 0x08000000, x         ,  x, x     , x         , x         , 0x1FFF0000, 0x1FFF7000, 0}, */
+/*	{0x495, "STM32WB30(5)xx/50(5)xx"          , 0x20004000, 0x2000C000, 0x08000000, x         ,  x, x     , x         , x         , 0x1FFF0000, 0x1FFF7000, 0}, */
 	/* WL */
 /*	{0x497, "STM32WLE5xx/WL55xx"              , 0x20002000, 0x20010000, 0x08000000, x         ,  x, x     , x         , x         , 0x1FFF0000, 0x1FFF4000, 0}, */
+	/* U5 */
+/*	{0x482, "STM32U575xx/585xx"               , 0x20004000, 0x200C0000, 0x08000000, x         ,  x, x     , x         , x         , 0x0BF90000, 0x0BFA0000, 0}, */
 	/* These are not (yet) in AN2606: */
 	{0x641, "Medium_Density PL"               , 0x20000200, 0x20005000, 0x08000000, 0x08020000,  4, p_1k  , 0x1FFFF800, 0x1FFFF80F, 0x1FFFF000, 0x1FFFF800, 0},
 	{0x9a8, "STM32W-128K"                     , 0x20000200, 0x20002000, 0x08000000, 0x08020000,  4, p_1k  , 0x08040800, 0x0804080F, 0x08040000, 0x08040800, 0},
