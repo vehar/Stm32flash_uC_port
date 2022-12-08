@@ -24,6 +24,7 @@
 #define SZ_256	0x00000100
 #define SZ_1K	0x00000400
 #define SZ_2K	0x00000800
+#define SZ_8K	0x00002000
 #define SZ_16K	0x00004000
 #define SZ_32K	0x00008000
 #define SZ_64K	0x00010000
@@ -40,6 +41,7 @@ static uint32_t p_128[]  = { SZ_128,  0 };
 static uint32_t p_256[]  = { SZ_256,  0 };
 static uint32_t p_1k[]   = { SZ_1K,   0 };
 static uint32_t p_2k[]   = { SZ_2K,   0 };
+static uint32_t p_8k[]   = { SZ_8K,   0 };
 static uint32_t p_128k[] = { SZ_128K, 0 };
 /* F2 and F4 page size */
 static uint32_t f2f4[]  = { SZ_16K, SZ_16K, SZ_16K, SZ_16K, SZ_64K, SZ_128K, 0 };
@@ -115,7 +117,7 @@ const stm32_dev_t devices[] = {
 	/* H7 */
 	{0x483, "STM32H72xxx/73xxx"               , 0x20004100, 0x20020000, 0x80000000, 0x08100000,  1, p_128k, 0         , 0         , 0x1FF00000, 0x1FF1E800, 0},
 	{0x450, "STM32H74xxx/75xxx"               , 0x20004100, 0x20020000, 0x08000000, 0x08200000,  1, p_128k, 0         , 0         , 0x1FF00000, 0x1FF1E800, 0},
-/*	{0x480, "STM32H7A3xx/B3xx"                , 0x20004100, 0x20020000, 0x08000000, x         ,  x, x     , x         , x         , 0x1FF00000, 0x1FF14000, 0}, */
+	{0x480, "STM32H7A3xx/B3xx"                , 0x20004100, 0x20020000, 0x08000000, 0x08100000,  1, p_8k  , 0         , 0         , 0x1FF00000, 0x1FF14000, 0},
 	/* L0 */
 	{0x457, "STM32L01xxx/02xxx"               , 0x20000800, 0x20000800, 0x08000000, 0x08004000, 32, p_128 , 0x1FF80000, 0x1FF8001F, 0x1FF00000, 0x1FF01000, F_NO_ME},
 	{0x425, "STM32L031xx/041xx"               , 0x20001000, 0x20002000, 0x08000000, 0x08008000, 32, p_128 , 0x1FF80000, 0x1FF8001F, 0x1FF00000, 0x1FF01000, F_NO_ME},
