@@ -34,34 +34,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := uart_f103
+BUILD_ARTIFACT_NAME := flasher_stm32
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-uart_f103.elf \
+flasher_stm32.elf \
 
 MAP_FILES += \
-uart_f103.map \
+flasher_stm32.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-uart_f103.list \
+flasher_stm32.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: uart_f103.elf secondary-outputs
+main-build: flasher_stm32.elf secondary-outputs
 
 # Tool invocations
-uart_f103.elf uart_f103.map: $(OBJS) $(USER_OBJS) /home/daria/STM32CubeIDE/workspace_1.12.1/uart_f103/STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "uart_f103.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"/home/daria/STM32CubeIDE/workspace_1.12.1/uart_f103/STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="uart_f103.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+flasher_stm32.elf flasher_stm32.map: $(OBJS) $(USER_OBJS) /home/daria/STM32CubeIDE/workspace_1.12.1/flusher_stm32/STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "flasher_stm32.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"/home/daria/STM32CubeIDE/workspace_1.12.1/flusher_stm32/STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="flasher_stm32.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -70,14 +70,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-uart_f103.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "uart_f103.list"
+flasher_stm32.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "flasher_stm32.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) default.size.stdout uart_f103.elf uart_f103.list uart_f103.map
+	-$(RM) default.size.stdout flasher_stm32.elf flasher_stm32.list flasher_stm32.map
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
