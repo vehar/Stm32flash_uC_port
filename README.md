@@ -4,6 +4,13 @@ This program runs on stm32f103 and can flash different stm boards (for supported
 
 > **_IMPORTANT:_** there should be pull-up resistors on i2c pins (PB6 - scl, PB7 - sda) 
 
+## Repository structure:
+- flasher_stm32 - main program
+- stm32flash_original - original project
+- test - test program for stm32f401 board that turns led on
+- test_f746 - test program for stm32f746 board that turns leds on
+- uart_communication.py - test script that communacates with board via UART and sends firmware file
+
 ## Usage
 
 Right now the program does the following things:
@@ -22,10 +29,7 @@ To use it you should:
     - then you should send the binary file in chunks of ```124``` bytes (for now this value is hardcoded as with default value it did not work) (the program will send a message ```Ready to receive portion of data```)
         - this step will continue until the end of the file
 
-<br> 
-<br>
-<br>
-<br>
+
 
 # USB-I2C adapter (for stme32f103)
 
