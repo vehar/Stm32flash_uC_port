@@ -68,7 +68,7 @@ struct port_interface *port = NULL;
 
 /* settings */
 struct port_options port_opts = {
-    .device	= NULL,
+    .device = NULL,
     .serial_mode = "8e1",
     .bus_addr = 0,
     .rx_frame_max = STM32_MAX_RX_FRAME,
@@ -87,11 +87,11 @@ enum actions {
 };
 
 enum actions action = ACT_NONE;
-int	npages = 0;
+int npages = 0;
 int spage = 0;
 int no_erase = 0;
-char verify	= 0;
-int	retry = 10;
+char verify = 0;
+int retry = 10;
 char exec_flag = 0;
 uint32_t execute = 0;
 char init_flag = 1;
@@ -129,7 +129,7 @@ int _write(int fd, char* ptr, int len) {
 int my_fprintf(FILE *stream, const char *format, ...) {
     va_list	listp;
     va_start(listp, format);
-    int ret =  vprintf(format, listp);
+    int ret = vprintf(format, listp);
     va_end(listp);
     return ret;
 }
@@ -232,6 +232,8 @@ unsigned long int scan_i2c_address() {
     uint8_t i=0, ret;
 
     fprintf(stdout, "%s", StartMSG);
+
+    /* check all possible addresses */
     for(i=1; i<128; i++)
     {
         ret = HAL_I2C_IsDeviceReady(&hi2c1, (uint16_t)(i<<1), 3, 5);
@@ -245,7 +247,8 @@ unsigned long int scan_i2c_address() {
             fprintf(stdout, "%s\n", Buffer);
             return i; 
         }
-
+        
+        /* format output */
         if (i % 16 == 0) {
             fprintf(stdout, "\n");
         }
@@ -254,10 +257,8 @@ unsigned long int scan_i2c_address() {
     return 0;
 }
 
-/* buffer to receive commands via UART and file size */
-uint8_t Rx_data[4+2];
-
-
+/* buffer to receive commands and file size via UART */
+uint8_t Rx_data[32+2];
 
 /* USER CODE END 0 */
 
@@ -310,7 +311,8 @@ int main(void)
             TODO: to continue you can enter 2 */
         if (Rx_data[0] == '1') {
             port_opts.bus_addr = scan_i2c_address(); /* address of i2c slave */
-
+            
+            /* if address is 0 means no address was found */
             if (port_opts.bus_addr==0) {
                 printf("Wrong address!\n");
                 continue;
@@ -322,7 +324,7 @@ int main(void)
 
             /* execute program after flashing - can be changed */
             exec_flag = 1;
-            execute  = 0x0;
+            execute = 0x0; /* 0 means flash start */
             if (execute % 4 != 0) {
                 fprintf(stderr, "ERROR: Execution address must be word-aligned\n");
                 return 1;
@@ -601,13 +603,12 @@ int main(void)
                         break ;
                 }
 
-                fprintf(diag,	"Done.\n");
+                fprintf(diag, "Done.\n");
                 ret = 0;
                 goto close;
 
 
         close:
-
             /* start execution of flashed code */
             if (stm && exec_flag && ret == 0) {
                 if (execute == 0)
@@ -622,7 +623,9 @@ int main(void)
                     fprintf(diag, "failed.\n");
             }
 
-            if (stm   ) stm32_close  (stm);
+            if (stm) 
+                stm32_close(stm);
+
             if (port)
                 port->close(port);
 
@@ -639,7 +642,6 @@ int main(void)
 
     }
 
-//	return ret;
     return 0;
 
   /* USER CODE END 3 */
