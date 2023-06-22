@@ -1,7 +1,13 @@
 stm32flash
 *.o
+
+
 parsers/parsers.a
 flasher_stm32/Debug
 flasher_stm32/.settings
 test.bin
 test_f746.bin
+
+flasher_stm32/.cproject
+flasher_stm32/.mxproject
+flasher_stm32/.project
