@@ -25,7 +25,7 @@ To use it you should:
 - send "1" via UART to start address scaning
 > **_IMPORTANT:_** check if board is still in boot mode as sometimes after address scan it can leave it
 - then you can send "2" to start flashing
-    - after that you should send the size of the binary file that will be flashed (the program will send a message ```Receive size:```)
+    - after that you should send the size of the binary file that will be flashed (the program will send a message ```Receive size:```, size should be sent as little endian and then it will be reconstructed)
     - then you should send the binary file in chunks of ```124``` bytes (for now this value is hardcoded as with default value it did not work) (the program will send a message ```Ready to receive portion of data```)
         - this step will continue until the end of the file
     - after that the program will start execution 

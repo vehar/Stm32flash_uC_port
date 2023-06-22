@@ -50,6 +50,7 @@ UART_HandleTypeDef huart1;
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define VERSION "0.7"
+#define intSize 4
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -257,8 +258,22 @@ unsigned long int scan_i2c_address() {
     return 0;
 }
 
+
 /* buffer to receive commands and file size via UART */
-uint8_t Rx_data[32+2];
+uint8_t Rx_data[intSize+2];
+
+
+/* reconstruct received bytes to uint32_t */
+uint32_t convertToInt(uint8_t bytesBuf[intSize+2]) {
+	uint32_t retValue = (uint32_t)bytesBuf[0]
+						+ (uint32_t)(bytesBuf[1] << 8)
+						+ (uint32_t)(bytesBuf[2] << 16)
+						+ (uint32_t)(bytesBuf[3] << 24);
+
+	return retValue;
+}
+
+
 
 /* USER CODE END 0 */
 
@@ -498,9 +513,9 @@ int main(void)
                     size = end - start;
                 else {
                     printf("Receive size:\n");
-                    while(HAL_UART_Receive(&huart1, Rx_data, 4, 1000) == HAL_TIMEOUT);
+                    while(HAL_UART_Receive(&huart1, Rx_data, intSize, 1000) == HAL_TIMEOUT);
 
-                    size = strtoul(Rx_data, NULL, 0);
+                    size = convertToInt(Rx_data);
                     printf("Size received: %d\n", size);
 
                 }

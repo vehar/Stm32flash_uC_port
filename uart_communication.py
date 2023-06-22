@@ -40,7 +40,7 @@ while True:
     # check if boards waits for size, if yes - send it 
     if "Receive size:" in output_dev:
         print(f">> {file_size}")
-        bytes_arr = str(file_size).encode()
+        bytes_arr = file_size.to_bytes(4, "little")
         ser.write(bytes_arr)
 
         continue
