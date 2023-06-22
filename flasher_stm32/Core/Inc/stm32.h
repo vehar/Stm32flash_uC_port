@@ -22,7 +22,6 @@
 #define _STM32_H
 
 #include <stdint.h>
-#include "serial.h"
 
 #define STM32_MAX_RX_FRAME	256	/* cmd read memory */
 #define STM32_MAX_TX_FRAME	(1 + 256 + 1)	/* cmd write memory */
@@ -48,7 +47,6 @@ typedef struct stm32_cmd	stm32_cmd_t;
 typedef struct stm32_dev	stm32_dev_t;
 
 struct stm32 {
-	const serial_t		*serial;
 	struct port_interface	*port;
 	uint8_t			bl_version;
 	uint8_t			version;

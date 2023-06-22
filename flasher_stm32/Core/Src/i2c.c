@@ -29,38 +29,12 @@
 #include <sys/stat.h>
 
 #include "compiler.h"
-#include "serial.h"
 #include "port.h"
 #include "main.h"
 
 extern UART_HandleTypeDef huart1;
 extern I2C_HandleTypeDef hi2c1;
-//#if !defined(__linux__)
-//
-//static port_err_t i2c_open(struct port_interface __unused *port,
-//			   struct port_options __unused *ops)
-//{
-//	return PORT_ERR_NODEV;
-//}
-//
-//struct port_interface port_i2c = {
-//	.name	= "i2c",
-//	.open	= i2c_open,
-//};
-//
-//#else
 
-//#ifdef __ANDROID__
-//#define I2C_SLAVE 0x0703 /* Use this slave address */
-//#define I2C_FUNCS 0x0705 /* Get the adapter functionality mask */
-///* To determine what functionality is present */
-//#define I2C_FUNC_I2C 0x00000001
-//#else
-//#include <linux/i2c.h>
-//#include <linux/i2c-dev.h>
-//#endif
-//
-//#include <sys/ioctl.h>
 
 struct i2c_priv {
 	int fd;
@@ -72,11 +46,6 @@ static port_err_t i2c_open(struct port_interface *port,
 {
 	struct i2c_priv *h;
 	int  addr;
-	// unsigned long funcs;
-
-	// /* 1. check device name match */
-	// if (strncmp(ops->device, "/dev/i2c-", strlen("/dev/i2c-")))
-	// 	return PORT_ERR_NODEV;
 
 	/* 2. check options */
 	addr = ops->bus_addr;
@@ -91,39 +60,7 @@ static port_err_t i2c_open(struct port_interface *port,
 		fprintf(stderr, "End of memory\n");
 		return PORT_ERR_UNKNOWN;
 	}
-	// fd = open(ops->device, O_RDWR);
-	// if (fd < 0) {
-	// 	fprintf(stderr, "Unable to open special file \"%s\"\n",
-	// 		ops->device);
-	// 	free(h);
-	// 	return PORT_ERR_UNKNOWN;
-	// }
 
-	/* 3.5. Check capabilities */
-	// ret = ioctl(fd, I2C_FUNCS, &funcs);
-	// if (ret < 0) {
-	// 	fprintf(stderr, "I2C ioctl(funcs) error %d\n", errno);
-	// 	close(fd);
-	// 	free(h);
-	// 	return PORT_ERR_UNKNOWN;
-	// }
-	// if ((funcs & I2C_FUNC_I2C) == 0) {
-	// 	fprintf(stderr, "Error: controller is not I2C, only SMBUS.\n");
-	// 	close(fd);
-	// 	free(h);
-	// 	return PORT_ERR_UNKNOWN;
-	// }
-
-	// /* 4. set options */
-	// ret = ioctl(fd, I2C_SLAVE, addr);
-	// if (ret < 0) {
-	// 	fprintf(stderr, "I2C ioctl(slave) error %d\n", errno);
-	// 	close(fd);
-	// 	free(h);
-	// 	return PORT_ERR_UNKNOWN;
-	// }
-
-	// h->fd = fd;
 	h->addr = addr;
 	port->private = h;
 	return PORT_ERR_OK;
@@ -136,7 +73,6 @@ static port_err_t i2c_close(struct port_interface *port)
 	h = (struct i2c_priv *)port->private;
 	if (h == NULL)
 		return PORT_ERR_UNKNOWN;
-	// close(h->fd);
 	free(h);
 	port->private = NULL;
 	return PORT_ERR_OK;
@@ -146,7 +82,7 @@ static port_err_t i2c_read(struct port_interface *port, void *buf,
 			   size_t nbyte)
 {
 	struct i2c_priv *h;
-	int ret;
+
 
 	h = (struct i2c_priv *)port->private;
 	if (h == NULL)
@@ -154,9 +90,6 @@ static port_err_t i2c_read(struct port_interface *port, void *buf,
     
 	HAL_I2C_Master_Receive(&hi2c1, (uint16_t)(h->addr<<1), buf, nbyte, HAL_MAX_DELAY);
 
-	// ret = read(h->fd, buf, nbyte);
-	// if (ret != (int)nbyte)
-	// 	return PORT_ERR_UNKNOWN;
 	return PORT_ERR_OK;
 }
 
@@ -164,7 +97,6 @@ static port_err_t i2c_write(struct port_interface *port, void *buf,
 			    size_t nbyte)
 {
 	struct i2c_priv *h;
-	int ret;
 
 	h = (struct i2c_priv *)port->private;
 	if (h == NULL)
@@ -172,21 +104,15 @@ static port_err_t i2c_write(struct port_interface *port, void *buf,
 
     HAL_I2C_Master_Transmit(&hi2c1, (uint16_t)(h->addr<<1), buf, nbyte, HAL_MAX_DELAY);
 
-	// ret = write(h->fd, buf, nbyte);
-	// if (ret != (int)nbyte)
-	// 	return PORT_ERR_UNKNOWN;
-
-
-
 	return PORT_ERR_OK;
 }
 
-static port_err_t i2c_gpio(struct port_interface __unused *port,
-			   serial_gpio_t __unused n,
-			   int __unused level)
-{
-	return PORT_ERR_OK;
-}
+//static port_err_t i2c_gpio(struct port_interface __unused *port,
+//			   serial_gpio_t __unused n,
+//			   int __unused level)
+//{
+//	return PORT_ERR_OK;
+//}
 
 static const char *i2c_get_cfg_str(struct port_interface *port)
 {

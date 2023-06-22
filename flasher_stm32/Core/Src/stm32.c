@@ -1210,9 +1210,9 @@ stm32_err_t stm32_crc_wrapper(const stm32_t *stm, uint32_t address,
 		address += len;
 
 		fprintf(stderr,
-			"\rCRC address 0x%08x (%.2%%) ",
-			address,
-			(100.0 / (float)total_len) * (float)(address - start)
+			"\rCRC address 0x%08x ",
+			address
+			//(100.0 / (float)total_len) * (float)(address - start)
 		);
 		fflush(stderr);
 	}

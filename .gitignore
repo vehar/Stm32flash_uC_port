@@ -1,3 +1,7 @@
 stm32flash
 *.o
 parsers/parsers.a
+flasher_stm32/Debug
+flasher_stm32/.settings
+test.bin
+test_f746.bin

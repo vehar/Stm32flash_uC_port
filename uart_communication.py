@@ -1,10 +1,15 @@
 import serial
 import time
+import sys
 
+if len(sys.argv) < 2:
+    print("Please, specify file path!")
+
+filename = sys.argv[1]
 wlen = 124  # max write length
 
 # open file to flush and get its size
-with open("test.bin", "rb") as to_flash:
+with open(filename, "rb") as to_flash:
     content = to_flash.read()
 
 file_size = len(content)
@@ -46,6 +51,12 @@ while True:
         ser.write(content[counter_l:counter_r])
         counter_l = counter_r
         counter_r = counter_r + wlen if counter_r + wlen < file_size else file_size
+
+
+        # reset counters
+        if counter_l == counter_r:
+            counter_l = 0
+            counter_r = wlen
         continue
 
 
