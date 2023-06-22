@@ -3,11 +3,11 @@ stm32flash
 
 
 parsers/parsers.a
-flasher_stm32/Debug
-flasher_stm32/.settings
+Debug
+.settings
 test.bin
 test_f746.bin
 
-flasher_stm32/.cproject
-flasher_stm32/.mxproject
-flasher_stm32/.project
+.cproject
+.mxproject
+.project
