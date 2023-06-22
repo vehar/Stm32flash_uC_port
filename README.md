@@ -28,10 +28,11 @@ To use it you should:
     - after that you should send the size of the binary file that will be flashed (the program will send a message ```Receive size:```)
     - then you should send the binary file in chunks of ```124``` bytes (for now this value is hardcoded as with default value it did not work) (the program will send a message ```Ready to receive portion of data```)
         - this step will continue until the end of the file
+    - after that the program will start execution 
 
 
 
-# USB-I2C adapter (for stme32f103)
+# USB-I2C adapter (for stm32f103)
 
 - clone [this repository](https://github.com/daniel-thompson/i2c-star) and follow the steps from its instruction except for last two steps
 - connect st-link to the board and run this command from ```i2c-star``` directory or specify the correct path to ```i2c-star/src/bootloader/usbdfu.hex``` :
