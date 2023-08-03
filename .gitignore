@@ -3,7 +3,6 @@ stm32flash
 
 
 parsers/parsers.a
-Debug
 .settings
 
 

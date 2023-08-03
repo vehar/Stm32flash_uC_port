@@ -95,15 +95,9 @@ int main(void)
   {
 	    /* Turn on LED */
 	    HAL_GPIO_WritePin(led_GPIO_Port, led_Pin, GPIO_PIN_SET);
-
-	    /* Delay for a while */
-	    HAL_Delay(1000);
-
-	    /* Turn off LED */
-	    HAL_GPIO_WritePin(led_GPIO_Port, led_Pin, GPIO_PIN_RESET);
-
-	    /* Delay for a while */
-	    HAL_Delay(1000);
+//	    HAL_Delay(1000);
+//	    HAL_GPIO_WritePin(led_GPIO_Port, led_Pin, GPIO_PIN_RESET);
+//	    HAL_Delay(1000);
 
     /* USER CODE END WHILE */
 
