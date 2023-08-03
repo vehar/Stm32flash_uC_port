@@ -638,7 +638,7 @@ int main(void)
                     fprintf(diag, "failed.\n");
             }
 
-            if (stm) 
+            if (stm)
                 stm32_close(stm);
 
             if (port)
