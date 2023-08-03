@@ -1,11 +1,6 @@
 stm32flash
 *.o
-
-
 parsers/parsers.a
 .settings
 
 
-.cproject
-.mxproject
-.project
