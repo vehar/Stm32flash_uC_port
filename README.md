@@ -21,14 +21,18 @@ Right now the program does the following things:
 - starts execution of firmware
 
 To use it you should:
+- determine COM port in you system and tune python script (Ex. port='COM20')
 - enter the boot mode on the board that should be flashed
+- run script Ex. $ python uart_communication.py A:\\LedOn.bin
 - send "1" via UART to start address scaning
-> **_IMPORTANT:_** check if board is still in boot mode as sometimes after address scan it can leave it
+> **_IMPORTANT:_** check  if board is still in boot mode as after address scan it can leave it
+- reset board in boot mode
 - then you can send "2" to start flashing
     - after that you should send the size of the binary file that will be flashed (the program will send a message ```Receive size:```, size should be sent as little endian and then it will be reconstructed)
     - then you should send the binary file in chunks of ```124``` bytes (for now this value is hardcoded as with default value it did not work) (the program will send a message ```Ready to receive portion of data```)
         - this step will continue until the end of the file
     - after that the program will start execution 
+- type "continue" few times and wait till flashing
 
 
 
