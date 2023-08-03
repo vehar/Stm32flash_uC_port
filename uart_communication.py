@@ -18,7 +18,8 @@ counter_r = wlen
 
 # open serial
 ser = serial.Serial(
-    port='/dev/ttyUSB0',
+    # port='/dev/ttyUSB0',
+    port='COM20',
     baudrate=115200  #,
 )
 
@@ -27,7 +28,7 @@ if(not ser.isOpen()):
 
 
 while True:
-    time.sleep(2)
+    time.sleep(0.1)
     output_dev = ""
     
     # read initial data from board

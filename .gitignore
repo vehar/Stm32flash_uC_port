@@ -5,8 +5,7 @@ stm32flash
 parsers/parsers.a
 Debug
 .settings
-test.bin
-test_f746.bin
+
 
 .cproject
 .mxproject
